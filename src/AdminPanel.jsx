@@ -2,16 +2,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
-  getFirestore,
   collection,
   addDoc,
   getDocs,
   deleteDoc,
   doc,
 } from "firebase/firestore";
-import app from "./firebaseConfig"; // <- χρησιμοποίησε το υπάρχον firebase.js που κάνεις initialize
+import app, { db } from "./firebaseConfig"; // ✅ χρησιμοποιούμε το δικό σου αρχείο
 
-const db = getFirestore(app);
 const auth = getAuth(app);
 
 function useCurrentRole() {
@@ -25,7 +23,6 @@ function useCurrentRole() {
         setRole("anonymous");
         return;
       }
-      // Διάβασε το users/{uid} για να φέρεις τον ρόλο
       try {
         const snap = await getDocs(collection(db, "users"));
         let r = "user";
@@ -45,7 +42,6 @@ function useCurrentRole() {
 }
 
 function ListSection({ title, colName, schema }) {
-  // schema = [{name:'name', label:'Ονομασία', type:'text'}, ...]
   const [items, setItems] = useState([]);
   const [form, setForm] = useState(() =>
     schema.reduce((acc, f) => ({ ...acc, [f.name]: f.default ?? "" }), {})
@@ -62,7 +58,6 @@ function ListSection({ title, colName, schema }) {
 
   useEffect(() => {
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [colName]);
 
   const onChange = (e, name, type) => {
@@ -73,7 +68,6 @@ function ListSection({ title, colName, schema }) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // basic trim
     const payload = {};
     schema.forEach((f) => {
       const val = form[f.name];
@@ -168,7 +162,6 @@ export default function AdminPanel() {
     <div className="max-w-5xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-6">Admin • Ρυθμίσεις Λιστών</h1>
 
-      {/* Μονάδες */}
       <ListSection
         title="Μονάδες"
         colName="units"
@@ -180,31 +173,17 @@ export default function AdminPanel() {
         ]}
       />
 
-      {/* Είδη Άδειας */}
       <ListSection
         title="Είδη Άδειας"
         colName="leaveTypes"
         schema={[
           { name: "name", label: "Ονομασία", placeholder: "π.χ. Κανονική" },
-          {
-            name: "requiresDateRange",
-            label: "Απαιτεί Ημερομηνίες;",
-            type: "checkbox",
-            required: false,
-            default: true,
-          },
-          {
-            name: "requiresReplacement",
-            label: "Απαιτεί Αντικαταστάτη;",
-            type: "checkbox",
-            required: false,
-            default: false,
-          },
+          { name: "requiresDateRange", label: "Απαιτεί Ημερομηνίες;", type: "checkbox", required: false, default: true },
+          { name: "requiresReplacement", label: "Απαιτεί Αντικαταστάτη;", type: "checkbox", required: false, default: false },
           { name: "active", label: "Ενεργή;", type: "checkbox", required: false, default: true },
         ]}
       />
 
-      {/* Είδη Υπηρεσίας */}
       <ListSection
         title="Είδη Υπηρεσίας"
         colName="serviceTypes"
