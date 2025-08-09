@@ -43,7 +43,7 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/admin" element={<div style={{padding: 24, fontSize: 24}}>ADMIN TEST</div>} />
       </Routes>
     </BrowserRouter>
   );
