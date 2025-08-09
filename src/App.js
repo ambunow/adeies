@@ -42,9 +42,9 @@ export default function App() {
       </header>
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        
+        <Route path="/admin" element={<div style={{padding: 24, fontSize: 24}}>ADMIN TEST</div>} />
       </Routes>
+
     </BrowserRouter>
   );
 }
