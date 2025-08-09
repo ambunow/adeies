@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import AdminPanel from "./AdminPanel";
-import { app } from "./firebase";
+import app from "./firebaseConfig";
 
 const auth = getAuth(app);
 
