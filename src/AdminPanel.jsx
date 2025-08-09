@@ -9,7 +9,7 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-import { app } from "./firebase"; // <- χρησιμοποίησε το υπάρχον firebase.js που κάνεις initialize
+import app from "./firebaseConfig"; // <- χρησιμοποίησε το υπάρχον firebase.js που κάνεις initialize
 
 const db = getFirestore(app);
 const auth = getAuth(app);
