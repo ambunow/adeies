@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import AdminPanel from "./AdminPanel";
-import app from "./firebaseConfig"; // ✅ import από το δικό σου config
+import app from "./firebaseConfig";
 
 const auth = getAuth(app);
 
@@ -11,17 +11,14 @@ function Home() {
   return (
     <main className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Αίτηση Άδειας</h1>
-      <p>Η φόρμα παραμένει ως έχει. Μπορείς να πας στο Admin από το μενού.</p>
+      <p>Αυτή είναι η αρχική (φόρμα). Το Admin είναι ξεχωριστή σελίδα.</p>
     </main>
   );
 }
 
 export default function App() {
   const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    return onAuthStateChanged(auth, (u) => setUser(u || null));
-  }, []);
+  useEffect(() => onAuthStateChanged(auth, (u) => setUser(u || null)), []);
 
   return (
     <BrowserRouter>
@@ -34,10 +31,7 @@ export default function App() {
           {user ? (
             <div className="flex items-center gap-3">
               <span>Καλώς ήρθες, {user.email}</span>
-              <button
-                onClick={() => signOut(auth)}
-                className="border px-3 py-1 rounded"
-              >
+              <button onClick={() => signOut(auth)} className="border px-3 py-1 rounded">
                 Αποσύνδεση
               </button>
             </div>
